@@ -9,6 +9,7 @@ A knowledge base of Claude architecture patterns for reference and per-project `
 ## Structure
 
 - `rules/` — the knowledge files (markdown). These are the product.
+- `.claude/commands/architect-review.md` — structured project audit command
 - `README.md` — usage docs and topic index
 
 ## Writing Rules

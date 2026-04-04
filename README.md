@@ -16,6 +16,19 @@ Reference knowledge base for building production-grade applications with Claude.
 
 ## Usage
 
+### Review a project
+
+Audit any project against the architect rules with the included command:
+
+```bash
+cd /path/to/your/project
+claude /architect-review
+```
+
+This produces a structured report with severity-rated findings, file paths, and specific recommendations — saved to `docs/architect-review-YYYY-MM-DD.md`.
+
+Requires the repo to be installed as a Claude Code plugin or the command file to be available.
+
 ### As a reference
 
 Clone the repo and read the files when you need them:
