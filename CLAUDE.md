@@ -4,13 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Repo Is
 
-A knowledge base of Claude architecture patterns, distributed as user-level Claude Code rule files (`~/.claude/rules/`). Based on the Claude Certified Architect — Foundations exam guide.
+A knowledge base of Claude architecture patterns for reference and per-project `@import`. Based on the Claude Certified Architect — Foundations exam guide.
 
 ## Structure
 
-- `rules/` — the rule files (markdown). These are the product.
-- `install.sh` — symlinks rule files into `~/.claude/rules/`
-- `README.md` — installation docs and topic index
+- `rules/` — the knowledge files (markdown). These are the product.
+- `README.md` — usage docs and topic index
 
 ## Writing Rules
 
