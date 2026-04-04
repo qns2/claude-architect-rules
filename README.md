@@ -1,10 +1,20 @@
 # Claude Architect Rules
 
-Reference knowledge base for building production-grade applications with Claude. Based on the [Claude Certified Architect — Foundations](https://www.anthropic.com/certification) exam domains.
+Reference knowledge base + review command for building production-grade applications with Claude. Based on the [Claude Certified Architect — Foundations](https://www.anthropic.com/certification) exam domains.
 
-5 focused markdown files covering all 30 task statements across the 5 exam domains. Use as a reference, or pull specific files into your project with `@import` when you're actually building agentic systems, MCP tools, or configuring Claude Code for teams.
+5 focused markdown files covering all 30 task statements across the 5 exam domains. Use as a reference, `@import` into projects, or run `/architect-review` to audit a project against the rules.
+
+## Install
+
+```bash
+claude plugin add github:qns2/claude-architect-rules
+```
+
+This gives you the `/architect-review` command in any project.
 
 ## What's Included
+
+### Knowledge Base (`rules/`)
 
 | File | Covers | Exam Domain (Weight) |
 |------|--------|----------------------|
@@ -14,32 +24,24 @@ Reference knowledge base for building production-grade applications with Claude.
 | `architect-prompts-and-output.md` | Few-shot prompting, JSON schemas, `tool_choice`, validation loops, batch processing, multi-pass review | Domain 4 (20%) |
 | `architect-context-reliability.md` | Context preservation, escalation patterns, error propagation, human review workflows, provenance | Domain 5 (15%) |
 
-## Usage
+### Review Command (`.claude/commands/`)
 
-### Review a project
+**`/architect-review [path]`** — Structured project audit against the rules.
 
-Audit any project against the architect rules with the included command:
+The review process:
+1. **Scope** — determines which of the 5 domains apply to your project
+2. **Read** — loads the actual rule files as source of truth
+3. **Audit** — checks each applicable rule against the codebase
+4. **Validate** — verifies file paths exist, confirms rules apply, removes false positives
+5. **Report** — structured findings with severity, file:line, current state, recommendation
 
-```bash
-cd /path/to/your/project
-claude /architect-review
-```
+Output is saved to `docs/architect-review-YYYY-MM-DD.md` in your project.
 
-This produces a structured report with severity-rated findings, file paths, and specific recommendations — saved to `docs/architect-review-YYYY-MM-DD.md`.
+## Other Usage
 
-Requires the repo to be installed as a Claude Code plugin or the command file to be available.
+### `@import` into a project
 
-### As a reference
-
-Clone the repo and read the files when you need them:
-
-```bash
-git clone https://github.com/qns2/claude-architect-rules.git
-```
-
-### In a project with `@import`
-
-When you're building something that needs this knowledge (an agentic system, MCP tools, etc.), import the relevant file(s) in your project's `CLAUDE.md`:
+When building something that needs this knowledge, import specific files in your project's `CLAUDE.md`:
 
 ```markdown
 # CLAUDE.md
@@ -48,24 +50,22 @@ When you're building something that needs this knowledge (an agentic system, MCP
 @import ~/Documents/GitHub/claude-architect-rules/rules/architect-tool-design.md
 ```
 
-This loads the knowledge only in that project's sessions — not globally.
+Loads the knowledge only in that project's sessions.
 
-### In `~/.claude/rules/` (global, use sparingly)
-
-If you're working on Claude architecture across multiple projects and want the rules always available:
+### Global rules (use sparingly)
 
 ```bash
 mkdir -p ~/.claude/rules
 ln -s ~/Documents/GitHub/claude-architect-rules/rules/architect-agentic-patterns.md ~/.claude/rules/
 ```
 
-This adds to context in every session, so only link what you actively need.
+Adds to context in every session — only link what you actively need.
 
-## Why Not Auto-Load Everything?
+## Design Decisions
 
-These files total ~430 lines. Loading all of them into every session wastes context tokens when you're working on projects that don't involve building Claude agents or MCP tools. Claude already knows most of this — the value is as a structured reference, not as behavioral rules.
+**Why not auto-load everything?** These files total ~430 lines. Loading all of them into every session wastes context tokens when you're working on projects that don't involve building Claude agents or MCP tools. Claude already knows most of this — the value is as a structured reference and review process, not as behavioral rules.
 
-Use `@import` to pull in specific files per-project when relevant.
+**Why a review command instead of standalone skills?** You already have planning, development, and review skills. Creating parallel architect skills means remembering to invoke the right one. A review command runs against the knowledge base on demand — structured process, validated output.
 
 ## Topics Covered
 

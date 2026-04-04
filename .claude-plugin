@@ -1,0 +1,5 @@
+{
+  "name": "claude-architect-rules",
+  "description": "Knowledge base + structured review command for Claude Architect best practices",
+  "version": "1.0.0"
+}
