@@ -50,6 +50,46 @@ Each finding has:
 
 Output is saved to `docs/architect-review-YYYY-MM-DD.md` in your project.
 
+### Example
+
+```bash
+# 1. Link the command into your project
+mkdir -p ~/Projects/my-agent/.claude/commands
+ln -s ~/Documents/GitHub/claude-architect-rules/.claude/commands/architect-review.md \
+      ~/Projects/my-agent/.claude/commands/
+
+# 2. Open Claude Code in the project
+cd ~/Projects/my-agent
+claude
+
+# 3. Run the review
+/architect-review
+```
+
+Claude will:
+- Read the project to determine which domains apply (skips irrelevant ones)
+- Read the rule files from this repo as source of truth
+- Audit each rule against the actual code, recording file paths and line numbers
+- Validate findings (check files exist, confirm relevance, remove false positives)
+- Save a structured report to `docs/architect-review-YYYY-MM-DD.md`
+
+Example finding:
+
+```
+### Subagent failures silently swallowed
+- **Rule:** Error Propagation Across Multi-Agent Systems
+- **Severity:** critical
+- **File:** `scripts/run_agents.sh:114`
+- **Current:** `wait $PID_A $PID_B ... || true` — if any subagent
+  crashes, the failure is silently ignored. Downstream agents have
+  no visibility into which domains are missing.
+- **Recommendation:** Check each subagent's output file after wait.
+  Include a "failed_agents" list in merged output so the coordinator
+  knows which domains have gaps.
+- **Why:** "Silently suppressing errors or terminating entire workflows
+  on single failures are both anti-patterns."
+```
+
 ### `@import` rules into a project
 
 When building something that needs the knowledge during development (not just review), import specific files in your project's `CLAUDE.md`:
